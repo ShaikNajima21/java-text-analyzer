@@ -1,7 +1,7 @@
 
 import java.util.Scanner;
 
-public class Main {
+public class TextAnalyzer {
 
     public static int countVowels(String text) {
         int count = 0;
@@ -114,9 +114,11 @@ public class Main {
             System.out.println("Characters: " + text.length());
 
             String[] words = text.split("\\s+");
+
             System.out.println("Words: " + words.length);
 
             System.out.println("Vowels: " + countVowels(text));
+
             System.out.println("Consonants: " + countConsonants(text));
 
             System.out.println("Longest word: " + longestWord(words));
@@ -124,6 +126,7 @@ public class Main {
             System.out.println("Title case: " + titleCase(words));
 
             String reversed = new StringBuilder(text).reverse().toString();
+
             System.out.println("Reversed: " + reversed);
 
             StringBuilder cleaned = new StringBuilder();
@@ -137,6 +140,7 @@ public class Main {
             }
 
             String original = cleaned.toString();
+
             String reverseCheck = new StringBuilder(original).reverse().toString();
 
             if (original.equals(reverseCheck)) {
@@ -160,12 +164,14 @@ public class Main {
             mostCommonLetter(text);
 
             System.out.print("Word to count: ");
+
             String search = sc.nextLine().trim();
 
             System.out.println("Appears: " + countWord(words, search));
 
             System.out.print("Analyze another? (y/n): ");
-            again = sc.nextLine();
+
+            again = sc.nextLine().trim();
         }
 
         System.out.println("Bye!");
