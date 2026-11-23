@@ -8,32 +8,28 @@ public class TextAnalyzer {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-
         String again = "y";
+
+        System.out.println("=== Text Analyzer ===");
 
         while (again.equalsIgnoreCase("y")) {
 
             System.out.print("Enter a sentence: ");
-            String text = sc.nextLine().trim();
+            String text = sc.nextLine();
 
-            if (text.isEmpty()) {
+            if (text.isBlank()) {
                 System.out.println("Please enter a valid sentence.");
                 continue;
             }
 
-            int characters = text.length();
+            String[] words = text.trim().split("\\s+");
 
-            String[] words = text.split("\\s+");
-
-            System.out.println("Characters: " + characters);
+            System.out.println("Characters: " + text.length());
             System.out.println("Words: " + words.length);
-
             System.out.println("Vowels: " + countVowels(text));
             System.out.println("Consonants: " + countConsonants(text));
-
             System.out.println("Longest word: " + longestWord(words));
             System.out.println("Title case: " + toTitleCase(words));
-
             System.out.println("Reversed: " + reverseText(text));
 
             System.out.println("Palindrome: " +
@@ -63,11 +59,9 @@ public class TextAnalyzer {
 
         int count = 0;
 
-        text = text.toLowerCase();
-
         for (int i = 0; i < text.length(); i++) {
 
-            char c = text.charAt(i);
+            char c = Character.toLowerCase(text.charAt(i));
 
             if ("aeiou".indexOf(c) >= 0) {
                 count++;
@@ -118,10 +112,13 @@ public class TextAnalyzer {
 
             result.append(word.substring(0, 1).toUpperCase());
             result.append(word.substring(1).toLowerCase());
-            result.append(" ");
+
+            if (i < words.length - 1) {
+                result.append(" ");
+            }
         }
 
-        return result.toString().trim();
+        return result.toString();
     }
 
     static String reverseText(String text) {
