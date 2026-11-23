@@ -13,17 +13,14 @@ public class TextAnalyzer {
 
         while (again.equalsIgnoreCase("y")) {
 
-            String text;
+            String text = "";
 
-            do {
+            while (text.isBlank()) {
                 System.out.print("Enter a sentence: ");
-                text = sc.nextLine().trim();
+                text = sc.nextLine();
+            }
 
-                if (text.isEmpty()) {
-                    System.out.println("Please enter a valid sentence.");
-                }
-
-            } while (text.isEmpty());
+            text = text.trim();
 
             String[] words = text.split("\\s+");
 
@@ -54,7 +51,7 @@ public class TextAnalyzer {
 
             char c = Character.toLowerCase(text.charAt(i));
 
-            if ("aeiou".indexOf(c) != -1) {
+            if ("aeiou".indexOf(c) >= 0) {
                 count++;
             }
         }
@@ -118,7 +115,6 @@ public class TextAnalyzer {
         }
 
         String original = cleaned.toString();
-
         String reversed = cleaned.reverse().toString();
 
         return original.equals(reversed);
