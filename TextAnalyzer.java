@@ -21,11 +21,11 @@ public class TextAnalyzer {
                 continue;
             }
 
-            int characters = text.length();
+            text = text.trim();
 
-            String[] words = text.trim().split("\\s+");
+            String[] words = text.split("\\s+");
 
-            System.out.println("Characters: " + characters);
+            System.out.println("Characters: " + text.length());
             System.out.println("Words: " + words.length);
             System.out.println("Vowels: " + countVowels(text));
             System.out.println("Longest word: " + longestWord(words));
