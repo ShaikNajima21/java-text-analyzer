@@ -1,57 +1,14 @@
 
 import java.util.Scanner;
 
-public class TextAnalyzer {
+public class Main {
 
-    public static void main(String[] args) {
-
-        Scanner sc = new Scanner(System.in);
-
-        String again = "y";
-
-        System.out.println("=== Text Analyzer ===");
-
-        while (again.equalsIgnoreCase("y")) {
-
-            String text = "";
-
-            while (text.isBlank()) {
-                System.out.print("Enter a sentence: ");
-                text = sc.nextLine();
-            }
-
-            text = text.trim();
-
-            String[] words = text.split("\\s+");
-
-            System.out.println("Characters: " + text.length());
-            System.out.println("Words: " + words.length);
-            System.out.println("Vowels: " + countVowels(text));
-            System.out.println("Longest word: " + longestWord(words));
-            System.out.println("Title case: " + toTitleCase(words));
-            System.out.println("Reversed: " + reverseText(text));
-
-            System.out.println("Palindrome: " +
-                    (isPalindrome(text) ? "yes" : "no"));
-
-            System.out.print("Analyze another? (y/n): ");
-            again = sc.nextLine().trim();
-        }
-
-        System.out.println("Bye!");
-
-        sc.close();
-    }
-
-    static int countVowels(String text) {
-
+    public static int countVowels(String text) {
         int count = 0;
+        text = text.toLowerCase();
 
         for (int i = 0; i < text.length(); i++) {
-
-            char c = Character.toLowerCase(text.charAt(i));
-
-            if ("aeiou".indexOf(c) >= 0) {
+            if ("aeiou".indexOf(text.charAt(i)) != -1) {
                 count++;
             }
         }
@@ -59,12 +16,24 @@ public class TextAnalyzer {
         return count;
     }
 
-    static String longestWord(String[] words) {
+    public static int countConsonants(String text) {
+        int count = 0;
 
+        for (int i = 0; i < text.length(); i++) {
+            char c = Character.toLowerCase(text.charAt(i));
+
+            if (c >= 'a' && c <= 'z' && "aeiou".indexOf(c) == -1) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    public static String longestWord(String[] words) {
         String longest = "";
 
         for (int i = 0; i < words.length; i++) {
-
             if (words[i].length() > longest.length()) {
                 longest = words[i];
             }
@@ -73,50 +42,134 @@ public class TextAnalyzer {
         return longest;
     }
 
-    static String toTitleCase(String[] words) {
-
+    public static String titleCase(String[] words) {
         StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < words.length; i++) {
+            result.append(words[i].substring(0, 1).toUpperCase());
+            result.append(words[i].substring(1).toLowerCase());
+            result.append(" ");
+        }
 
-            String word = words[i];
+        return result.toString().trim();
+    }
 
-            result.append(word.substring(0, 1).toUpperCase());
-            result.append(word.substring(1).toLowerCase());
+    public static int countWord(String[] words, String search) {
+        int count = 0;
 
-            if (i < words.length - 1) {
-                result.append(" ");
+        for (int i = 0; i < words.length; i++) {
+            if (words[i].equalsIgnoreCase(search)) {
+                count++;
             }
         }
 
-        return result.toString();
+        return count;
     }
 
-    static String reverseText(String text) {
-
-        return new StringBuilder(text).reverse().toString();
-    }
-
-    static boolean isPalindrome(String text) {
-
-        StringBuilder cleaned = new StringBuilder();
+    public static void mostCommonLetter(String text) {
+        int[] frequency = new int[26];
 
         for (int i = 0; i < text.length(); i++) {
-
             char c = Character.toLowerCase(text.charAt(i));
 
-            if (Character.isLetter(c)) {
-                cleaned.append(c);
+            if (c >= 'a' && c <= 'z') {
+                frequency[c - 'a']++;
             }
         }
 
-        if (cleaned.length() == 0) {
-            return false;
+        int max = 0;
+        char common = ' ';
+
+        for (int i = 0; i < 26; i++) {
+            if (frequency[i] > max) {
+                max = frequency[i];
+                common = (char) (i + 'a');
+            }
         }
 
-        String original = cleaned.toString();
-        String reversed = cleaned.reverse().toString();
+        if (max == 0) {
+            System.out.println("Most common letter: none");
+        } else {
+            System.out.println("Most common letter: " + common + " (" + max + ")");
+        }
+    }
 
-        return original.equals(reversed);
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        String again = "y";
+
+        while (again.equalsIgnoreCase("y")) {
+
+            System.out.println("=== Text Analyzer ===");
+            System.out.print("Enter a sentence: ");
+
+            String text = sc.nextLine().trim();
+
+            if (text.isEmpty()) {
+                System.out.println("Please enter a sentence.");
+                continue;
+            }
+
+            System.out.println("Characters: " + text.length());
+
+            String[] words = text.split("\\s+");
+            System.out.println("Words: " + words.length);
+
+            System.out.println("Vowels: " + countVowels(text));
+            System.out.println("Consonants: " + countConsonants(text));
+
+            System.out.println("Longest word: " + longestWord(words));
+
+            System.out.println("Title case: " + titleCase(words));
+
+            String reversed = new StringBuilder(text).reverse().toString();
+            System.out.println("Reversed: " + reversed);
+
+            StringBuilder cleaned = new StringBuilder();
+
+            for (int i = 0; i < text.length(); i++) {
+                char c = Character.toLowerCase(text.charAt(i));
+
+                if (Character.isLetter(c)) {
+                    cleaned.append(c);
+                }
+            }
+
+            String original = cleaned.toString();
+            String reverseCheck = new StringBuilder(original).reverse().toString();
+
+            if (original.equals(reverseCheck)) {
+                System.out.println("Palindrome: yes");
+            } else {
+                System.out.println("Palindrome: no");
+            }
+
+            System.out.print("Word lengths: ");
+
+            for (int i = 0; i < words.length; i++) {
+                System.out.print(words[i] + " (" + words[i].length() + ")");
+
+                if (i < words.length - 1) {
+                    System.out.print(", ");
+                }
+            }
+
+            System.out.println();
+
+            mostCommonLetter(text);
+
+            System.out.print("Word to count: ");
+            String search = sc.nextLine().trim();
+
+            System.out.println("Appears: " + countWord(words, search));
+
+            System.out.print("Analyze another? (y/n): ");
+            again = sc.nextLine();
+        }
+
+        System.out.println("Bye!");
+
+        sc.close();
     }
 }
